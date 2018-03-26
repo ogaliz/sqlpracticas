@@ -4,7 +4,6 @@
 
 
 #Consulta 2: Subir un 5% la comisión de todos los pisos.
-
 #Nota 1: Una comisión superior al 100% no será válida.
 #Nota 2: No se trata de subir en un 5% el porcentaje actual de cada comisión (por ejemplo, que una comisión del 5% pase a ser del 5,25%), sino de subir un 5% en general (por ejemplo, que una comisión del 1% pase a ser del 6%, o que una del 5% pase a ser del 10%)
 
