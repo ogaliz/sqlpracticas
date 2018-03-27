@@ -4,14 +4,93 @@
 
 
 #Consulta 2: Subir un 5% la comisión de todos los pisos.
-
 #Nota 1: Una comisión superior al 100% no será válida.
 #Nota 2: No se trata de subir en un 5% el porcentaje actual de cada comisión (por ejemplo, que una comisión del 5% pase a ser del 5,25%), sino de subir un 5% en general (por ejemplo, que una comisión del 1% pase a ser del 6%, o que una del 5% pase a ser del 10%)
 
 
 #Consulta 3: Eliminar las entradas de caja correspondientes al día 16/04/2006.
 
+
 #Consulta 4: Eliminar los pedidos con día de llegada 17/4/2006.
+
 
 #Consulta 5: Importe máximo y mínimo que ha pasado por caja entre los días 14/11/2005 y 01/02/2006 (ambos inclusive)
 #Salida: maximo, minimo
+
+-- Consulta 6: ¿Cuántos alquileres comienzan el día 01/02/2006?
+-- Salida: número
+
+
+
+-- Consulta 7: ¿Cuántos pisos hay en L'Estartit?
+-- Salida: número
+-- 
+-- Consulta 8: ¿Cuántos pedidos se han cancelado con el piso número 10?
+-- Salida: número
+-- 
+-- Consulta 9: ¿Qué clientes se van el mes de octubre de 2005?
+-- Salida: nif_cli
+-- 
+-- Consulta 10: ¿Qué propietarios hay con algún apellido que cotenga la letra 'u'?
+-- Salida: nif_prop, apel
+-- 
+-- Consulta 11: ¿Qué pisos hay en Pals o en L'Escala con un precio inferior o igual a 50,00€ por día?
+select N_PISO, PRECIO from PISO where LOC IN("L-Estartit", "L-Escala") and PRECIO <= 50;
+-- Salida: n_piso, precio
+
+-- Consulta 12: ¿Cuántos propietarios tenemos de cada localidad?
+select Loc, count(Nombre) NumeroDePisos from PROP group by 1;   
+-- Salida: localidad, numero
+-- 
+-- Consulta 13: Para cada día de caja mostrar la cantidad diaria de pagos de tipo A que se ha hecho.
+select DIA, count(OPERACION) numeroAs from CAJA where OPERACION ="A" group by 1;
+-- Salida: dia, numero
+-- 
+-- Consulta 14: ¿Qué beneficio tiene actualmente la agencia por cada pedido?
+
+-- Salida: n_pedido, numero
+-- 
+-- Consulta 15: ¿Cuántos pisos, iguales o diferentes, ha contratado cada cliente?
+select count(PEDIDO.NIF_CLI) Pedidos, NOMBRE
+from PEDIDO join CLI on PEDIDO.NIF_CLI=CLI.NIF_CLI
+group by 2; 
+-- Salida: nif_cli, numero
+
+-- Consulta 16: Listado de nombres y apellidos de propietarios con la dirección y la localidad de sus pisos.
+select concat(PROP.NOMBRE,' ',PROP.APEL) NombrePropietario, PISO.DIR Direccion, PISO.LOC Localidad 
+from PROP join PISO using(NIF_PROP);
+-- Salida: nombre, apellidos, dirección, localidad
+
+-- Consulta 17: Listado de pagos que se han hecho en contratos con el piso número 5.
+
+-- Salida: n_factura, operacion, importe, dia
+-- 
+-- Consulta 18: ¿Qué pedidos se ha hecho con el piso de dirección 'Av. Girona 10' de L'Escala?
+-- Salida: n_pedido
+-- 
+-- Consulta 19: Por cada propitario dar la suma del precio/dia de sus pisos.
+-- Salida: nombre, apel, numero
+-- 
+-- Consulta 20: Dar el número de pisos que ha alquilado cada cliente (no mostrar los que no han alquilado nada).
+-- Salida: nombre, apel, numero
+-- 
+-- Consulta 21: Para cada pedido (que se le pueda aplicar) dar las fechas de las parejas formadas por los pagos 'A' y pagos 'B'.
+-- Salida: n_pedido, fecha1, fecha2
+-- 
+-- Consulta 22: Dar las direcciones de todas las parejas posibles de pisos de manera que el primero sea de L'Estartit, el segundo de L'Escala y su precio conjunto sea de 95,00€.
+-- Salida: n_piso1, direccion1, n_piso2, direccion2
+-- 
+-- Consulta 23: Dar el nif de los clientes que han alquilado pisos en L'Escala.
+-- Salida: nif_cli
+-- 
+-- Consulta 24: Dar nombre y apellidos de los clientes que han alquilado pisos en L'Escala.
+-- Salida: nombre, apel
+-- 
+-- Consulta 25: Dar la dirección de todos los pisos de la propietaria Antonia Sierra Martin.
+-- Salida: dir, loc
+-- 
+-- Consulta 26: Dar para cada localidad la dirección del piso más barato.
+-- Salida: dir, loc, precio  
+-- 
+-- Consulta 27: Dar la dirección de los pisos que tienen un precio por encima de la media de precios de todos los pisos.
+-- Salida: dir, loc, precio
