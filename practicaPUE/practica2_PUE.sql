@@ -18,20 +18,23 @@
 #Salida: maximo, minimo
 
 -- Consulta 6: ¿Cuántos alquileres comienzan el día 01/02/2006?
+select count(PEDIDO.N_PEDIDO) PedidosDia2 from PEDIDO where LLEGADA='2006-02-01';
 -- Salida: número
 
-
-
 -- Consulta 7: ¿Cuántos pisos hay en L'Estartit?
+select count(LOC) PisosEnEstartit from PISO where LOC="L-Estartit"; 
 -- Salida: número
 -- 
 -- Consulta 8: ¿Cuántos pedidos se han cancelado con el piso número 10?
+select count(PEDIDO.N_PEDIDO) CancelsPiso10 from PEDIDO where CANCELADO=true and N_PISO=10;
 -- Salida: número
--- 
+
 -- Consulta 9: ¿Qué clientes se van el mes de octubre de 2005?
+select PEDIDO.NIF_CLI from PEDIDO where PARTIDA like '%2005-10-%';
 -- Salida: nif_cli
 -- 
 -- Consulta 10: ¿Qué propietarios hay con algún apellido que cotenga la letra 'u'?
+select PROP.NIF_PROP, PROP.APEL from PROP where APEL like '%u%';
 -- Salida: nif_prop, apel
 -- 
 -- Consulta 11: ¿Qué pisos hay en Pals o en L'Escala con un precio inferior o igual a 50,00€ por día?
@@ -69,6 +72,9 @@ from PROP join PISO using(NIF_PROP);
 -- Salida: n_pedido
 -- 
 -- Consulta 19: Por cada propitario dar la suma del precio/dia de sus pisos.
+select PROP.NIF_PROP, PROP.NOMBRE, APEL, sum(PISO.PRECIO) totalPagado
+from PROP left join PISO on PROP.NIF_PROP=PISO.NIF_PROP
+group by 1 order by 2 ; 
 -- Salida: nombre, apel, numero
 -- 
 -- Consulta 20: Dar el número de pisos que ha alquilado cada cliente (no mostrar los que no han alquilado nada).
@@ -81,16 +87,33 @@ from PROP join PISO using(NIF_PROP);
 -- Salida: n_piso1, direccion1, n_piso2, direccion2
 -- 
 -- Consulta 23: Dar el nif de los clientes que han alquilado pisos en L'Escala.
+select PEDIDO.NIF_CLI Clientes from PEDIDO where 
 -- Salida: nif_cli
 -- 
 -- Consulta 24: Dar nombre y apellidos de los clientes que han alquilado pisos en L'Escala.
 -- Salida: nombre, apel
 -- 
 -- Consulta 25: Dar la dirección de todos los pisos de la propietaria Antonia Sierra Martin.
+select PISO.DIR, PISO.LOC from PISO left join PROP
+on PROP.NIF_PROP=PISO.NIF_PROP where PROP.NOMBRE="Antonia"; 
 -- Salida: dir, loc
 -- 
 -- Consulta 26: Dar para cada localidad la dirección del piso más barato.
+#select DIR, LOC, PRECIO from PISO where min(PRECIO) group by PRECIO;
 -- Salida: dir, loc, precio  
 -- 
 -- Consulta 27: Dar la dirección de los pisos que tienen un precio por encima de la media de precios de todos los pisos.
+select PISO.DIR, PISO.LOC, PISO.PRECIO from PISO where PRECIO > 
+(select round(avg(PRECIO)) from PISO) order by 3;
 -- Salida: dir, loc, precio
+
+
+
+
+
+
+
+
+
+
+
