@@ -9,7 +9,12 @@
 
 
 #Consulta 3: Eliminar las entradas de caja correspondientes al día 16/04/2006.
-
+-- creamos primero una vista por si acaso:
+create view entrDeCaja as select * from CAJA ;
+-- eliminamos los registros deseados:
+delete from entrDeCaja where N_FACTURA = (select N_FACTURA from CAJA where DIA = '2006-04-16'); 
+-- eliminamos la vista si lo consideramos: 
+drop view entrDeCaja;
 
 #Consulta 4: Eliminar los pedidos con día de llegada 17/4/2006.
 
@@ -69,6 +74,8 @@ from PROP join PISO using(NIF_PROP);
 -- Salida: n_factura, operacion, importe, dia
 -- 
 -- Consulta 18: ¿Qué pedidos se ha hecho con el piso de dirección 'Av. Girona 10' de L'Escala?
+select count(PEDIDO.N_PISO) pedidos from PEDIDO right join PISO 
+on PEDIDO.N_PISO=PISO.N_PISO where PISO.DIR like 'Riera 18';
 -- Salida: n_pedido
 -- 
 -- Consulta 19: Por cada propitario dar la suma del precio/dia de sus pisos.
